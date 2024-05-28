@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：最主要的作用就是绑定mapper.xml与对应那个Mapper接口的关系，要求接口名称为：全限定名 -->
+<mapper namespace="com.example.lyhfirstproject.mapper.DepartmentMapper">
+
+    <select id="selectAll" resultMap="findU_O" resultType="com.example.lyhfirstproject.entity.Department">
+        select a.id,a.dept_name,a.description,a.address,b.id,b.user_name,b.password,b.gender,b.birthday,b.dept_id from department a, user b where a.id=b.dept_id
+    </select>
+
+    <resultMap id="findU_O" type="com.example.lyhfirstproject.entity.Department">
+        <!--column 标签可以配置数据库表的列名，也可以配置别名-->
+        <result column="id" property="id"></result>
+        <result column="dept_name" property="dept_name"></result>
+        <result column="description" property="description"></result>
+        <result column="address" property="address"></result>
+        <collection property="users" ofType="com.example.lyhfirstproject.entity.User">
+
+            <!--与具体的sql相关联，根据编写的sql返回结果集的key，进行解析；
+                如果column 设定的是数据库的列名，但是查询结果使用了as进行了指向，则不能获取到对应的数据；
+                即：设定了as别名，此处column则需要设定为别名称-->
+            <result column="id" property="id"></result>
+            <result column="user_name" property="user_name"></result>
+            <result column="password" property="password"></result>
+            <result column="gender" property="gender"></result>
+            <result column="birthday" property="birthday"></result>
+            <result column="dept_id" property="dept_id"></result>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectById" resultMap="findU_O" resultType="com.example.lyhfirstproject.entity.Department">
+        select a.id,a.dept_name,a.description,a.address,b.id,b.user_name,b.password,b.gender,b.birthday,b.dept_id from department a, user b where a.id=b.dept_id and a.id = #{id}
+    </select>
+
+    <!--    <insert id="insertToDepartment" useGeneratedKeys="true" keyProperty="id">-->
+    <!--        insert into user(id,userName,passWord) values(#{id},#{userName},#{passWord})-->
+    <!--    </insert>-->
+
+    <!--    <update id = "update">-->
+    <!--        update user set userName=#{userName},passWord=#{passWord} where id=#{id}-->
+    <!--    </update>-->
+
+    <!--    <delete id="delete">-->
+    <!--        delete from user where id=#{id}-->
+    <!--    </delete>-->
+
+</mapper>
